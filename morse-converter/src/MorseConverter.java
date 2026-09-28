@@ -62,8 +62,8 @@ public static String morseTextToText(String morseText) {
 }
 
 private static int morseToUnicode(byte morse) {
-  int morseIndex = getMorseIndex(morse, morseLetters);
-  int unicodeOffset = 65;
+  byte morseIndex = getMorseIndex(morse, morseLetters);
+  byte unicodeOffset = 65;
 
   if (morseIndex == -1) {
     morseIndex = getMorseIndex(morse, morseNumbers);
@@ -87,8 +87,8 @@ private static byte morseStringToByte(String morseText) {
   return morse;
 }
 
-private static int getMorseIndex(byte morseByte, byte[] morse) {
-  for (int i = 0; i < morse.length; i++) {
+private static byte getMorseIndex(byte morseByte, byte[] morse) {
+  for (byte i = 0; i < morse.length; i++) {
     if (morseByte != morse[i]) {
       continue;
     }
@@ -100,7 +100,7 @@ private static int getMorseIndex(byte morseByte, byte[] morse) {
 
 private static byte getMorseByteFromChar(char letter) {
   int unicode = letter;
-  int unicodeOffset = 65;
+  byte unicodeOffset = 65;
 
   if (unicode < 65) {
     unicodeOffset = 48;
@@ -112,13 +112,13 @@ private static byte getMorseByteFromChar(char letter) {
   return morseLetters[unicode];
 }
 
-private static String morseToString(int n) {
-  int loadingZeros = Integer.numberOfLeadingZeros(n);
-  int totalBits = 31 - loadingZeros;
+private static String morseToString(byte morse) {
+  byte loadingZeros = (byte) Integer.numberOfLeadingZeros(morse);
+  byte totalBits = (byte) (7 - loadingZeros);
 
   StringBuilder stringBuilder = new StringBuilder();
-  for (int i = totalBits - 1; i >= 0; i--) {
-    int bit = (n >> i) & 1;
+  for (byte i = (byte) (totalBits - 1); i >= 0; i--) {
+    byte bit = (byte) ((morse >> i) & 1);
     stringBuilder.append(bit == 0 ? '.' : '-');
   }
   return stringBuilder.toString();
